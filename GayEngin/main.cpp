@@ -5,16 +5,19 @@
 
 const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
+"out vec4 vertexColor;\n"
 "void main()\n"
 "{\n"
 "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+"   vertexColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
 "}\0";
 
 const char* fragShaderSource = "#version 330 core\n"
 "out vec4 FragColor;\n"
+"uniform vec4 ourColor;\n"
 "void main()\n"
 "{\n"
-"	FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"	FragColor = ourColor;\n"
 "}\0";
 
 const char* fragYellowShaderSource = "#version 330 core\n"
@@ -53,7 +56,9 @@ int main()
 	};
 	
 
-	
+	int nrAttrib;
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttrib);
+	std::cout << "Max number of vertex attributes: " << nrAttrib << std::endl;
 
 	unsigned int vertexShader;
 
@@ -181,7 +186,11 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// draw our first triangle
+		float timeVal = glfwGetTime();
+		float greenVal = (sin(timeVal) / 2.0f) + 0.5f;
+		int vertexColorLoc = glGetUniformLocation(shaderProgram, "ourColor");
 		glUseProgram(shaderProgram);
+		glUniform4f(vertexColorLoc, 0.0f, greenVal, 0.0f, 1.0f);
 		glBindVertexArray(VAO[0]); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glUseProgram(shaderProgram2);
