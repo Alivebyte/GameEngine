@@ -26,5 +26,8 @@
     <ClInclude Include="main.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="shader.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
