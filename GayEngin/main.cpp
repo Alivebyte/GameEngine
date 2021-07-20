@@ -109,14 +109,16 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// draw our first triangle
-		float timeVal = glfwGetTime();
-		float greenVal = (sin(timeVal) / 2.0f) + 0.5f;
+		float timeVal = glfwGetTime() * 10;
+		float offsetVal = (sin(timeVal) / 2.0f) + 0.5f;
 		//int vertexColorLoc = glGetUniformLocation(shaderProgram, "ourColor");
 		basic.use();
 		//glUniform4f(vertexColorLoc, 0.0f, greenVal, 0.0f, 1.0f);
+		basic.setFloat("horizOffset", offsetVal);
 		glBindVertexArray(VAO[0]); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		basicYellow.use();
+		basicYellow.setFloat("horizOffset", 0.0f);
 		glBindVertexArray(VAO[1]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		
