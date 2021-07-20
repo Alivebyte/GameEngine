@@ -158,6 +158,7 @@
   <ItemGroup>
     <ClInclude Include="main.h" />
     <ClInclude Include="shader.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="basic.fs" />

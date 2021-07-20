@@ -35,6 +35,9 @@
     <ClInclude Include="shader.h">
       <Filter>Исходные файлы\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="basic.vs">
