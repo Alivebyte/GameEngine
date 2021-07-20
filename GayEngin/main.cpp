@@ -52,6 +52,13 @@ int main()
 	//	1, 2, 3    // second triangle
 	//};
 
+	float texCoords[] =
+	{
+		0.0f, 0.0f, // bottom-left
+		1.0f, 0.0f, // bottom-right
+		0.5f, 1.0f  // top
+	};
+
 	float vertices1[] =
 	{
 		//vectors			//colors
@@ -105,8 +112,10 @@ int main()
 		processInput(window);
 
 		//render order
-		glClearColor(0.2f, 0.8f, 1.0f, 1.0f);
+		glClearColor(0.5f, 0.2f, 0.4f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
 
 		// draw our first triangle
 		float timeVal = glfwGetTime() * 10;
