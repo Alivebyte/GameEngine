@@ -7,6 +7,8 @@
 #include <iostream>
 #include "stb_image.h"
 
+float mixValue = 0.2;
+
 int main()
 {
 
@@ -47,10 +49,10 @@ int main()
 
 	float vertices[] = {
 		// positions          // colors           // texture coords
-		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   0.55f,0.55f,   // top right
-		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   0.55f, 0.45f,   // bottom right
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.45f, 0.45f,   // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.55f, 0.55f    // top left 
+		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
 	};
 	unsigned int indices[] = {  // note that we start from 0!
 		0, 1, 3,   // first triangle
@@ -178,6 +180,7 @@ int main()
 		//int vertexColorLoc = glGetUniformLocation(shaderProgram, "ourColor");
 		basic.setInt("texture1", 0);
 		basic.setInt("texture2", 1);
+		basic.setFloat("texCoef", mixValue);
 		basic.use();
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture);
@@ -212,4 +215,8 @@ void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) mixValue += 0.2;
+
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) mixValue -= 0.2;
 }
