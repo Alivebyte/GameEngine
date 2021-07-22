@@ -1,11 +1,18 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-
 #include "main.h"
 #include "shader.h"
 #include <iostream>
 #include "stb_image.h"
+
+#define GLM_FORCE_CXX17
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+
 
 float mixValue = 0.2;
 
@@ -172,7 +179,16 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+		//glm::mat4 trans = glm::mat4(1.0f);
+		//trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+		//trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		
+		glm::mat4 view = glm::mat4(1.0f);
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+		glm::mat4 proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
 		// draw our first triangle
 		float timeVal = glfwGetTime() * 10;
@@ -181,6 +197,15 @@ int main()
 		basic.setInt("texture1", 0);
 		basic.setInt("texture2", 1);
 		basic.setFloat("texCoef", mixValue);
+		unsigned int tranformLoc = glGetUniformLocation(basic.ID, "model");
+		glUniformMatrix4fv(tranformLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+		tranformLoc = glGetUniformLocation(basic.ID, "view");
+		glUniformMatrix4fv(tranformLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+		tranformLoc = glGetUniformLocation(basic.ID, "proj");
+		glUniformMatrix4fv(tranformLoc, 1, GL_FALSE, glm::value_ptr(proj));
+
 		basic.use();
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture);
@@ -216,7 +241,16 @@ void processInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) mixValue += 0.2;
-
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) mixValue -= 0.2;
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	{
+		mixValue += 0.001f;
+		if (mixValue > 1.0f)
+			mixValue = 1.0f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	{
+		mixValue -= 0.001f;
+		if (mixValue < 0.0f)
+			mixValue = 0.0f;
+	}
 }
