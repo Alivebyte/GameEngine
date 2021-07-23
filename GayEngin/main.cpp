@@ -15,6 +15,21 @@
 
 
 float mixValue = 0.2;
+float deltaTime = 0.0f;	// Time between current frame and last frame
+float lastFrame = 0.0f; // Time of last frame
+float lastX = 400, lastY = 300;
+bool firstMouse = true;
+
+float yaw;
+float pitch;
+
+float fov = 45.0f;
+
+
+
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 int main()
 {
@@ -23,6 +38,7 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	
 
 	
 	GLFWwindow* window = glfwCreateWindow(800, 600, "GayEngin", NULL, NULL);
@@ -33,8 +49,13 @@ int main()
 		return EXIT_FAILURE;
 	}
 	glfwMakeContextCurrent(window);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
 	
+
+
 
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	//glViewport(0, 0, 400, 400);
@@ -241,29 +262,23 @@ int main()
 		//trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
 		//trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 		//create camera
-		glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-
-		//specify target and direction along inverted Z-axis
-		glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-		glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
-
-		//Right Axis
-		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-		glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
-
 		
-		const float radius = 10.0f;
-		float camX = sin(glfwGetTime()) * radius;
-		float camZ = cos(glfwGetTime()) * radius;
+
+		////Right Axis
+		//glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+		//glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+		
+		
+		
 		glm::mat4 view;
-		view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
 		//view = glm::translate(view, glm::vec3(0.0f, 0.0f, 0.0f));
 
 		//Up Axis
-		glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
+	/*	glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);*/
 
-		glm::mat4 proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+		glm::mat4 proj = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
 	
 
 
@@ -323,8 +338,14 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void processInput(GLFWwindow* window)
 {
+	float currentFrame = glfwGetTime();
+	deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+
+	float cameraSpeed = 2.5f * deltaTime;
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 	{
@@ -338,4 +359,58 @@ void processInput(GLFWwindow* window)
 		if (mixValue < 0.0f)
 			mixValue = 0.0f;
 	}
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		cameraPos += cameraSpeed * cameraFront;
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		cameraPos -= cameraSpeed * cameraFront;
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (firstMouse) // initially set to true
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	
+	float xoffset = xpos - lastX;
+	float yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
+	lastX = xpos;
+	lastY = ypos;
+
+	const float sensitivity = 0.1f;
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	glm::vec3 direction;
+	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	direction.y = sin(glm::radians(pitch));
+	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	cameraFront = glm::normalize(direction);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	fov -= (float)yoffset;
+	if (fov < 1.0f)
+		fov = 1.0f;
+	if (fov > 45.0f)
+		fov = 45.0f;
 }
