@@ -240,13 +240,31 @@ int main()
 		//glm::mat4 trans = glm::mat4(1.0f);
 		//trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
 		//trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.6f, 1.0f, 0.3f));
+		//create camera
+		glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+
+		//specify target and direction along inverted Z-axis
+		glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
+
+		//Right Axis
+		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+		glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+
 		
-		glm::mat4 view = glm::mat4(1.0f);
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+		const float radius = 10.0f;
+		float camX = sin(glfwGetTime()) * radius;
+		float camZ = cos(glfwGetTime()) * radius;
+		glm::mat4 view;
+		view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+
+		//view = glm::translate(view, glm::vec3(0.0f, 0.0f, 0.0f));
+
+		//Up Axis
+		glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
 
 		glm::mat4 proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+	
 
 
 
@@ -258,14 +276,7 @@ int main()
 		basic.setInt("texture1", 0);
 		basic.setInt("texture2", 1);
 		basic.setFloat("texCoef", mixValue);
-		unsigned int tranformLoc = glGetUniformLocation(basic.ID, "model");
-		glUniformMatrix4fv(tranformLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-		tranformLoc = glGetUniformLocation(basic.ID, "view");
-		glUniformMatrix4fv(tranformLoc, 1, GL_FALSE, glm::value_ptr(view));
-
-		tranformLoc = glGetUniformLocation(basic.ID, "proj");
-		glUniformMatrix4fv(tranformLoc, 1, GL_FALSE, glm::value_ptr(proj));
+	
 
 		basic.use();
 		glActiveTexture(GL_TEXTURE0);
@@ -282,9 +293,13 @@ int main()
 			float angle = 20.0f * i;
 			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 			basic.setMat4("model", model);
+			basic.setMat4("view", view);
+			basic.setMat4("proj", proj);
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
+
+
 		/*basicYellow.use();
 		basicYellow.setFloat("horizOffset", 0.0f);
 		glBindVertexArray(VAO[1]);
