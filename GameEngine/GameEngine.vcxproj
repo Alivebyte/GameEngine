@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GayEngin\libs\imgui;C:\Users\Alivebyte\source\repos\GayEngin\libs\glm;C:\Users\Alivebyte\source\repos\GayEngin\libs\glad\include;C:\Users\Alivebyte\source\repos\GayEngin\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GameEngine\libs\imgui;C:\Users\Alivebyte\source\repos\GameEngine\libs\glm;C:\Users\Alivebyte\source\repos\GameEngine\libs\glad\include;C:\Users\Alivebyte\source\repos\GameEngine\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
@@ -106,7 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GayEngin\libs\imgui;C:\Users\Alivebyte\source\repos\GayEngin\libs\glm;C:\Users\Alivebyte\source\repos\GayEngin\libs\glad\include;C:\Users\Alivebyte\source\repos\GayEngin\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GameEngine\libs\imgui;C:\Users\Alivebyte\source\repos\GameEngine\libs\glm;C:\Users\Alivebyte\source\repos\GameEngine\libs\glad\include;C:\Users\Alivebyte\source\repos\GameEngine\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
@@ -124,7 +124,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GayEngin\libs\imgui;C:\Users\Alivebyte\source\repos\GayEngin\libs\glm;C:\Users\Alivebyte\source\repos\GayEngin\libs\glad\include;C:\Users\Alivebyte\source\repos\GayEngin\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GameEngine\libs\imgui;C:\Users\Alivebyte\source\repos\GameEngine\libs\glm;C:\Users\Alivebyte\source\repos\GameEngine\libs\glad\include;C:\Users\Alivebyte\source\repos\GameEngine\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
@@ -142,7 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GayEngin\libs\imgui;C:\Users\Alivebyte\source\repos\GayEngin\libs\glm;C:\Users\Alivebyte\source\repos\GayEngin\libs\glad\include;C:\Users\Alivebyte\source\repos\GayEngin\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GameEngine\libs\imgui;C:\Users\Alivebyte\source\repos\GameEngine\libs\glm;C:\Users\Alivebyte\source\repos\GameEngine\libs\glad\include;C:\Users\Alivebyte\source\repos\GameEngine\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
