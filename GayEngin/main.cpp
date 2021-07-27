@@ -1,4 +1,8 @@
 #include "glad/glad.h"
+
+#include "backends/imgui_impl_opengl3.h"
+#include "backends/imgui_impl_glfw.h"
+#include "imgui.h"
 #include "GLFW/glfw3.h"
 
 #include "main.h"
@@ -12,6 +16,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+
+
 
 
 
@@ -245,12 +252,18 @@ int main()
 	glBindVertexArray(0);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+	ImGui::CreateContext();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init();
 
 
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
 
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
 		//render order
 		glEnable(GL_DEPTH_TEST);
 		glClearColor(0.5f, 0.2f, 0.4f, 1.0f);
@@ -312,6 +325,7 @@ int main()
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
+		
 
 
 		/*basicYellow.use();
@@ -320,10 +334,39 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, 3);*/
 		
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		
+		// Create a window called "My First Tool", with a menu bar.
+		ImGui::Begin("My First Tool", (bool*)true, ImGuiWindowFlags_MenuBar);
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
+				if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff */ }
+				//if (ImGui::MenuItem("Close", "Ctrl+W")) { my_tool_active = false; }
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenuBar();
+		}
+		float my_color[] = {1.0f, 1.0f, 1.0f};
+		// Edit a color (stored as ~4 floats)
+		ImGui::ColorEdit4("Color", my_color);
 
+		// Plot some values
+		const float my_values[] = { 0.2f, 0.1f, 1.0f, 0.5f, 0.9f, 2.2f };
+		ImGui::PlotLines("Frame Times", my_values, IM_ARRAYSIZE(my_values));
+
+		// Display contents in a scrolling region
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Important Stuff");
+		ImGui::BeginChild("Scrolling");
+		for (int n = 0; n < 50; n++)
+			ImGui::Text("%04d: Some text", n);
+		ImGui::EndChild();
+		ImGui::End();
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+	
 	}
 	
 	glfwTerminate();

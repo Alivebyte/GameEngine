@@ -88,8 +88,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GayEngin\libs\glm;C:\Users\Alivebyte\source\repos\GayEngin\libs\glad\include;C:\Users\Alivebyte\source\repos\GayEngin\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GayEngin\libs\imgui;C:\Users\Alivebyte\source\repos\GayEngin\libs\glm;C:\Users\Alivebyte\source\repos\GayEngin\libs\glad\include;C:\Users\Alivebyte\source\repos\GayEngin\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,8 +106,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GayEngin\libs\glm;C:\Users\Alivebyte\source\repos\GayEngin\libs\glad\include;C:\Users\Alivebyte\source\repos\GayEngin\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GayEngin\libs\imgui;C:\Users\Alivebyte\source\repos\GayEngin\libs\glm;C:\Users\Alivebyte\source\repos\GayEngin\libs\glad\include;C:\Users\Alivebyte\source\repos\GayEngin\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -124,8 +124,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GayEngin\libs\glm;C:\Users\Alivebyte\source\repos\GayEngin\libs\glad\include;C:\Users\Alivebyte\source\repos\GayEngin\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GayEngin\libs\imgui;C:\Users\Alivebyte\source\repos\GayEngin\libs\glm;C:\Users\Alivebyte\source\repos\GayEngin\libs\glad\include;C:\Users\Alivebyte\source\repos\GayEngin\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,8 +142,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GayEngin\libs\glm;C:\Users\Alivebyte\source\repos\GayEngin\libs\glad\include;C:\Users\Alivebyte\source\repos\GayEngin\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\Alivebyte\source\repos\GayEngin\libs\imgui;C:\Users\Alivebyte\source\repos\GayEngin\libs\glm;C:\Users\Alivebyte\source\repos\GayEngin\libs\glad\include;C:\Users\Alivebyte\source\repos\GayEngin\libs\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,6 +156,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\libs\glad\src\glad.c" />
+    <ClCompile Include="..\libs\imgui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\libs\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\libs\imgui\imgui.cpp" />
+    <ClCompile Include="..\libs\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\libs\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\libs\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\libs\imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="stb_image.cpp" />
