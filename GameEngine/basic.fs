@@ -10,5 +10,5 @@ uniform float texCoef;
 
 void main()
 {
-	FragColor = mix(texture(texture1, TexCoord), texture(texture2, vec2(TexCoord.x, TexCoord.y)), texCoef);
+	FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), texCoef);
 }

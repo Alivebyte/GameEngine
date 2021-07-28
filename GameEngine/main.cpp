@@ -34,8 +34,8 @@ float pitch;
 
 Camera cam;
 
-float my_color[] = { 0.5f, 0.2f, 0.4f, 1.0f };
-bool closeWindow = true;
+
+
 
 
 int main()
@@ -45,8 +45,9 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	
 
+	float my_color[] = { 0.5f, 0.2f, 0.4f, 1.0f };
+	static bool closeWindow = true;
 	
 	GLFWwindow* window = glfwCreateWindow(800, 600, "GameEngine", NULL, NULL);
 	if (window == NULL)
@@ -411,6 +412,7 @@ void processInput(GLFWwindow* window)
 		cam.ProcessKeyboard(Camera_Movement::LEFT, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		cam.ProcessKeyboard(Camera_Movement::RIGHT, deltaTime);
+	
 	if (glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS) {
 
 		int imode = glfwGetInputMode(window, GLFW_CURSOR);
