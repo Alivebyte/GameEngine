@@ -34,7 +34,7 @@ float pitch;
 
 Camera cam;
 
-float my_color[] = { 0.2f, 0.5f, 0.3f, 1.0f };
+float my_color[] = { 0.5f, 0.2f, 0.4f, 1.0f };
 bool closeWindow = true;
 
 
@@ -48,7 +48,7 @@ int main()
 	
 
 	
-	GLFWwindow* window = glfwCreateWindow(800, 600, "GayEngin", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(800, 600, "GameEngine", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create window" << std::endl;
