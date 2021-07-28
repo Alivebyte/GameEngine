@@ -34,7 +34,8 @@ float pitch;
 
 Camera cam;
 
-
+float my_color[] = { 0.2f, 0.5f, 0.3f, 1.0f };
+bool closeWindow = true;
 
 
 int main()
@@ -266,7 +267,7 @@ int main()
 		ImGui::NewFrame();
 		//render order
 		glEnable(GL_DEPTH_TEST);
-		glClearColor(0.5f, 0.2f, 0.4f, 1.0f);
+		glClearColor(my_color[0], my_color[1], my_color[2], my_color[3]);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
@@ -335,7 +336,7 @@ int main()
 		
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		// Create a window called "My First Tool", with a menu bar.
-		ImGui::Begin("My First Tool", (bool*)true, ImGuiWindowFlags_MenuBar);
+		ImGui::Begin("My First Tool", &closeWindow, ImGuiWindowFlags_MenuBar);
 		if (ImGui::BeginMenuBar())
 		{
 			if (ImGui::BeginMenu("File"))
@@ -347,7 +348,7 @@ int main()
 			}
 			ImGui::EndMenuBar();
 		}
-		float my_color[] = {1.0f, 1.0f, 1.0f};
+		
 		// Edit a color (stored as ~4 floats)
 		ImGui::ColorEdit4("Color", my_color);
 
