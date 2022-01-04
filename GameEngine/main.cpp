@@ -1,3 +1,5 @@
+
+
 #include "glad/glad.h"
 
 #include "backends/imgui_impl_opengl3.h"
@@ -21,10 +23,10 @@
 
 
 
-float mixValue = 0.2;
-float deltaTime = 0.0f;	// Time between current frame and last frame
-float lastFrame = 0.0f; // Time of last frame
-float lastX = 400, lastY = 300;
+float mixValue = 0.2f;
+double deltaTime = 0.0f;	// Time between current frame and last frame
+double lastFrame = 0.0f; // Time of last frame
+double lastX = 400, lastY = 300;
 bool firstMouse = true;
 
 float yaw;
@@ -351,7 +353,7 @@ int main()
 
 
 		// draw our first triangle
-		float timeVal = glfwGetTime() * 10;
+		float timeVal = (float)glfwGetTime() * 10;
 		float offsetVal = (sin(timeVal) / 2.0f) + 0.5f;
 		//int vertexColorLoc = glGetUniformLocation(shaderProgram, "ourColor");
 		basic.setInt("texture1", 0);
@@ -456,14 +458,14 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void processInput(GLFWwindow* window)
 {
-	float currentFrame = glfwGetTime();
+	double currentFrame = glfwGetTime();
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
 
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	float cameraSpeed = 2.5f * deltaTime;
+	double cameraSpeed = 2.5f * deltaTime;
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 	{
@@ -514,8 +516,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	}
 
 	
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
+	double xoffset = xpos - lastX;
+	double yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
 	lastX = xpos;
 	lastY = ypos;
 	cam.ProcessMouseMovement(xoffset, yoffset);
