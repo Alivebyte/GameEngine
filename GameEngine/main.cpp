@@ -21,7 +21,6 @@
 
 
 
-
 float mixValue = 0.2;
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
@@ -79,52 +78,97 @@ int main()
 	std::cout << "Max number of vertex attributes: " << nrAttrib << std::endl;
 
 	Shader basic("basic.vs", "basic.fs");
+	Shader lighting("lighting.vs", "lighting.fs");
 	//Shader basicYellow("basic.vs", "basicYellow.fs");
 
 
 
+	//float vertices[] = {
+	//-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	// 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+	// 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	// 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	//-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	//-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+	//-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	// 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	// 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	// 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	//-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+	//-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+	//-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	//-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	//-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	//-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	//-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	//-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	// 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	// 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	// 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	// 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	// 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	// 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	//-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	// 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+	// 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	// 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	//-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	//-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+	//-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	// 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	// 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	// 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	//-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+	//-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	//};
+
 	float vertices[] = {
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,  
+	 0.5f, -0.5f, -0.5f, 
+	 0.5f,  0.5f, -0.5f,  
+	 0.5f,  0.5f, -0.5f,  
+	-0.5f,  0.5f, -0.5f,  
+	-0.5f, -0.5f, -0.5f, 
 
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f, 
+	 0.5f, -0.5f,  0.5f, 
+	 0.5f,  0.5f,  0.5f, 
+	 0.5f,  0.5f,  0.5f, 
+	-0.5f,  0.5f,  0.5f,  
+	-0.5f, -0.5f,  0.5f,
 
-	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,
+	-0.5f,  0.5f, -0.5f,
+	-0.5f, -0.5f, -0.5f,
+	-0.5f, -0.5f, -0.5f,
+	-0.5f, -0.5f,  0.5f,
+	-0.5f,  0.5f,  0.5f,
 
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,
+	 0.5f,  0.5f, -0.5f,
+	 0.5f, -0.5f, -0.5f,
+	 0.5f, -0.5f, -0.5f,
+	 0.5f, -0.5f,  0.5f,
+	 0.5f,  0.5f,  0.5f,
 
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,
+	 0.5f, -0.5f, -0.5f,
+	 0.5f, -0.5f,  0.5f,
+	 0.5f, -0.5f,  0.5f,
+	-0.5f, -0.5f,  0.5f,
+	-0.5f, -0.5f, -0.5f,
 
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	-0.5f,  0.5f, -0.5f,
+	 0.5f,  0.5f, -0.5f,
+	 0.5f,  0.5f,  0.5f,
+	 0.5f,  0.5f,  0.5f,
+	-0.5f,  0.5f,  0.5f,
+	-0.5f,  0.5f, -0.5f,
 	};
 	//unsigned int indices[] = {  // note that we start from 0!
 	//	0, 1, 3,   // first triangle
@@ -176,22 +220,30 @@ int main()
 
 	
 
+
+	
+
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
+
+	unsigned int lightVAO;
+	glGenVertexArrays(1, &lightVAO);
+	glBindVertexArray(lightVAO);
 	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	//glEnableVertexAttribArray(1);
 	
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
+	/*glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(2);*/
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	/*glBindVertexArray(VAO[1]);*/
-
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
 	//glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
 	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
 
@@ -305,16 +357,20 @@ int main()
 		basic.setInt("texture1", 0);
 		basic.setInt("texture2", 1);
 		basic.setFloat("texCoef", mixValue);
+		
+		
 	
 
 		basic.use();
+		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 		//glUniform4f(vertexColorLoc, 0.0f, greenVal, 0.0f, 1.0f);
 		//basic.setFloat("horizOffset", offsetVal);
-		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+		glBindVertexArray(VAO);
+		 // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		for (unsigned int i = 0; i < 10; i++)
 		{
 			glm::mat4 model = glm::mat4(1.0f);
@@ -325,9 +381,27 @@ int main()
 			basic.setMat4("view", view);
 			basic.setMat4("proj", proj);
 
+			
+
+			basic.setVec3("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
+			basic.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-		
+
+		glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, lightPos);
+		model = glm::scale(model, glm::vec3(0.2f));
+
+		lighting.use();
+
+		lighting.setMat4("model", model);
+		lighting.setMat4("view", view);
+		lighting.setMat4("proj", proj);
+		glBindVertexArray(lightVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
 		/*basicYellow.use();

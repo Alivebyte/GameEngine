@@ -79,5 +79,11 @@
     <None Include="basicYellow.fs">
       <Filter>Файлы ресурсов</Filter>
     </None>
+    <None Include="lighting.vs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="lighting.fs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
   </ItemGroup>
 </Project>
