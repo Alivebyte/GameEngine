@@ -28,8 +28,6 @@ uniform Light light;
 
 void main()
 {
-
-	
 	vec3 norm = normalize(Normal);
 	vec3 lightDir = normalize(LightPos - FragPos);
 
@@ -45,7 +43,8 @@ void main()
 	float spec = pow(max(dot(reflectDir, viewDir), 0.0f), material.shininess);
 	vec3 specular = light.specular * spec * texture(material.specular, TexCoord).rgb;
 
-	vec3 emission = texture(material.emission, TexCoord).rgb;
+	vec3 emission = vec3(0.0);
+	emission = texture(material.emission, TexCoord).rgb;
 
 	vec3 result = ambient + diffuse + specular + emission;
 	FragColor = vec4(result, 1.0);

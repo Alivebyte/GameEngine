@@ -161,7 +161,7 @@ int main()
 	
 	unsigned int diffuseMap = load_texture("container2.png");
 	unsigned int specularMap = load_texture("container2_specular.png");
-	unsigned int emissionMap = load_texture("matrix.jpg");
+	unsigned int emissionMap = load_texture("emis.png");
 
 	basic.use();
 	basic.setInt("material.diffuse", 0);
