@@ -389,7 +389,28 @@ int main()
 
 			
 			basic.setVec3("lightPos", lightPos);
-			basic.setVec3("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
+
+			basic.setVec3("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
+			basic.setVec3("material.diffuse", glm::vec3(1.0f, 0.5f, 0.31f));
+			basic.setVec3("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
+			basic.setFloat("material.shininess", 32.0f);
+
+
+			glm::vec3 lightColor;
+			lightColor.x = sin(glfwGetTime() * 2.0f);
+			lightColor.y = sin(glfwGetTime() * 0.7f);
+			lightColor.z = sin(glfwGetTime() * 1.3f);
+
+			glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+			glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+
+
+
+			basic.setVec3("light.ambient", ambientColor);
+			basic.setVec3("light.diffuse", diffuseColor); // darken diffuse light a bit
+			basic.setVec3("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+
+
 			basic.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
