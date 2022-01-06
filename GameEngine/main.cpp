@@ -161,10 +161,12 @@ int main()
 	
 	unsigned int diffuseMap = load_texture("container2.png");
 	unsigned int specularMap = load_texture("container2_specular.png");
+	unsigned int emissionMap = load_texture("matrix.jpg");
 
 	basic.use();
 	basic.setInt("material.diffuse", 0);
 	basic.setInt("material.specular", 1);
+	basic.setInt("material.emission", 2);
 	
 
 	ImGui::CreateContext();
@@ -221,6 +223,9 @@ int main()
 
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, specularMap);
+
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, emissionMap);
 
 			glBindVertexArray(VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
