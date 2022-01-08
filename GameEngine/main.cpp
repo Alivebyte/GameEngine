@@ -161,12 +161,12 @@ int main()
 	
 	unsigned int diffuseMap = load_texture("container2.png");
 	unsigned int specularMap = load_texture("container2_specular.png");
-	unsigned int emissionMap = load_texture("emis.png");
+	//unsigned int emissionMap = load_texture("emis.png");
 
 	basic.use();
 	basic.setInt("material.diffuse", 0);
 	basic.setInt("material.specular", 1);
-	basic.setInt("material.emission", 2);
+	//basic.setInt("material.emission", 2);
 	
 
 	ImGui::CreateContext();
@@ -185,17 +185,48 @@ int main()
 		glEnable(GL_DEPTH_TEST);
 		glClearColor(my_color[0], my_color[1], my_color[2], my_color[3]);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
+
+		basic.use();
+
+
+		glm::vec3 lightDir = glm::vec3(-0.2f, -1.0f, -0.3f);
+
+		basic.setVec3("light.direction", lightDir);
+
+		//basic.setVec3("lightPos", lightPos);
+
+		basic.setFloat("material.shininess", 64.0f);
+
+		basic.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+		basic.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+		basic.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+		basic.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 		glm::mat4 view;
 		view = cam.GetViewMatrix();
-
+		basic.setMat4("view", view);
 		glm::mat4 proj = glm::perspective(glm::radians(cam.Zoom), 800.0f / 600.0f, 0.1f, 100.0f);
-
+		basic.setMat4("proj", proj);
 		
 
-		glm::vec3 lightPos(sin(glfwGetTime() * 1.2f), 0.0f, cos(glfwGetTime() * 1.2f));
+		//glm::vec3 lightPos(1.2f, 1.0f, 2.1f);
 
+		glm::mat4 model = glm::mat4(1.0f);
+		basic.setMat4("model", model);
 		
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, diffuseMap);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, specularMap);
+
+		/*glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, emissionMap);*/
+
+		glBindVertexArray(VAO);
+
+
 		 // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		for (unsigned int i = 0; i < 10; i++)
 		{
@@ -203,37 +234,17 @@ int main()
 			model = glm::translate(model, cubePositions[i]);
 			float angle = 20.0f * i;
 			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			basic.use();
 			basic.setMat4("model", model);
-			basic.setMat4("view", view);
-			basic.setMat4("proj", proj);
 
-			basic.setVec3("lightPos", lightPos);
-
-			basic.setFloat("material.shininess", 64.0f);
-
-			basic.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-			basic.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-			basic.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-
-			basic.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, diffuseMap);
-
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, specularMap);
-
-			glActiveTexture(GL_TEXTURE2);
-			glBindTexture(GL_TEXTURE_2D, emissionMap);
-
-			glBindVertexArray(VAO);
+			
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
-		glm::mat4 model = glm::mat4(1.0f);
+		// We don't need light cube for directional light
+
+		/*glm::mat4 model = glm::mat4(1.0f);
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, lightPos);
+		model = glm::translate(model, lightDir);
 		model = glm::scale(model, glm::vec3(0.2f));
 
 		lighting.use();
@@ -242,15 +253,9 @@ int main()
 		lighting.setMat4("view", view);
 		lighting.setMat4("proj", proj);
 		glBindVertexArray(lightVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDrawArrays(GL_TRIANGLES, 0, 36);*/
 
-
-		/*basicYellow.use();
-		basicYellow.setFloat("horizOffset", 0.0f);
-		glBindVertexArray(VAO[1]);
-		glDrawArrays(GL_TRIANGLES, 0, 3);*/
 		
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		// Create a window called "My First Tool", with a menu bar.
 		ImGui::Begin("My First Tool", &closeWindow, ImGuiWindowFlags_MenuBar);
 		if (ImGui::BeginMenuBar())
