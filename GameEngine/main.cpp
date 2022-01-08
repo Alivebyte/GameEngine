@@ -188,13 +188,13 @@ int main()
 
 		basic.use();
 
-
+		basic.setVec3("viewPos", cam.Position);
 		//glm::vec3 lightDir = glm::vec3(-0.2f, -1.0f, -0.3f);
 		
-		//basic.setVec3("light.direction", lightDir);
-		
-		basic.setVec3("lightPos", lightPos);
-
+		basic.setVec3("light.position", cam.Position );
+		basic.setVec3("light.direction", cam.Front);
+		basic.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+		basic.setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
 		basic.setFloat("material.shininess", 64.0f);
 
 		basic.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
@@ -204,6 +204,7 @@ int main()
 		basic.setFloat("light.constant", 1.0f);
 		basic.setFloat("light.linear", 0.09f);
 		basic.setFloat("light.quadratic", 0.032f);
+		
 
 		basic.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 		glm::mat4 view;
