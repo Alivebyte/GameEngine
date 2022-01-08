@@ -22,7 +22,7 @@ double deltaTime = 0.0f;	// Time between current frame and last frame
 double lastFrame = 0.0f; // Time of last frame
 double lastX = 400, lastY = 300;
 bool firstMouse = true;
-
+glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
 float yaw;
 float pitch;
 
@@ -189,17 +189,21 @@ int main()
 		basic.use();
 
 
-		glm::vec3 lightDir = glm::vec3(-0.2f, -1.0f, -0.3f);
-
-		basic.setVec3("light.direction", lightDir);
-
-		//basic.setVec3("lightPos", lightPos);
+		//glm::vec3 lightDir = glm::vec3(-0.2f, -1.0f, -0.3f);
+		
+		//basic.setVec3("light.direction", lightDir);
+		
+		basic.setVec3("lightPos", lightPos);
 
 		basic.setFloat("material.shininess", 64.0f);
 
 		basic.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
 		basic.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
 		basic.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+		basic.setFloat("light.constant", 1.0f);
+		basic.setFloat("light.linear", 0.09f);
+		basic.setFloat("light.quadratic", 0.032f);
 
 		basic.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 		glm::mat4 view;
@@ -242,9 +246,9 @@ int main()
 
 		// We don't need light cube for directional light
 
-		/*glm::mat4 model = glm::mat4(1.0f);
+		
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, lightDir);
+		model = glm::translate(model, lightPos);
 		model = glm::scale(model, glm::vec3(0.2f));
 
 		lighting.use();
@@ -253,7 +257,7 @@ int main()
 		lighting.setMat4("view", view);
 		lighting.setMat4("proj", proj);
 		glBindVertexArray(lightVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);*/
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		
 		// Create a window called "My First Tool", with a menu bar.
