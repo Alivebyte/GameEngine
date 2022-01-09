@@ -140,6 +140,13 @@ int main()
 		glm::vec3(0.0f,  0.0f, -3.0f)
 	};
 
+	glm::vec3 pointLightColors[] = {
+		glm::vec3(1.0f, 0.6f, 0.0f),
+		glm::vec3(1.0f, 0.0f, 0.0f),
+		glm::vec3(1.0f, 1.0, 0.0),
+		glm::vec3(0.2f, 0.2f, 1.0f)
+	};
+
 	unsigned int VBO, VAO;//, EBO;
 	glGenVertexArrays(1, &VAO);
 	//glGenBuffers(1, &EBO);
@@ -191,7 +198,7 @@ int main()
 		ImGui::NewFrame();
 		//render order
 		glEnable(GL_DEPTH_TEST);
-		glClearColor(my_color[0], my_color[1], my_color[2], my_color[3]);
+		glClearColor(0.75f, 0.52f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		basic_lighting.use();
@@ -200,38 +207,38 @@ int main()
 		basic_lighting.setFloat("material.shininess", 32.0f);
 
 		basic_lighting.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
-		basic_lighting.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
-		basic_lighting.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+		basic_lighting.setVec3("dirLight.ambient", 0.3f, 0.24f, 0.14f);
+		basic_lighting.setVec3("dirLight.diffuse", 0.7f, 0.42f, 0.26f);
 		basic_lighting.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
 		// point light 1
 		basic_lighting.setVec3("pointLights[0].position", pointLightPositions[0]);
-		basic_lighting.setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
-		basic_lighting.setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
-		basic_lighting.setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
+		basic_lighting.setVec3("pointLights[0].ambient", pointLightColors[0].x * 0.1, pointLightColors[0].y * 0.1, pointLightColors[0].z * 0.1);
+		basic_lighting.setVec3("pointLights[0].diffuse", pointLightColors[0].x, pointLightColors[0].y, pointLightColors[0].z);
+		basic_lighting.setVec3("pointLights[0].specular", pointLightColors[0].x, pointLightColors[0].y, pointLightColors[0].z);
 		basic_lighting.setFloat("pointLights[0].constant", 1.0f);
 		basic_lighting.setFloat("pointLights[0].linear", 0.09);
 		basic_lighting.setFloat("pointLights[0].quadratic", 0.032);
 		// point light 2
 		basic_lighting.setVec3("pointLights[1].position", pointLightPositions[1]);
-		basic_lighting.setVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
-		basic_lighting.setVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
-		basic_lighting.setVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
+		basic_lighting.setVec3("pointLights[1].ambient", pointLightColors[1].x * 0.1, pointLightColors[1].y * 0.1, pointLightColors[1].z * 0.1);
+		basic_lighting.setVec3("pointLights[1].diffuse", pointLightColors[1].x, pointLightColors[1].y, pointLightColors[1].z);
+		basic_lighting.setVec3("pointLights[1].specular", pointLightColors[1].x, pointLightColors[1].y, pointLightColors[1].z);
 		basic_lighting.setFloat("pointLights[1].constant", 1.0f);
 		basic_lighting.setFloat("pointLights[1].linear", 0.09);
 		basic_lighting.setFloat("pointLights[1].quadratic", 0.032);
 		// point light 3
 		basic_lighting.setVec3("pointLights[2].position", pointLightPositions[2]);
-		basic_lighting.setVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
-		basic_lighting.setVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
-		basic_lighting.setVec3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
+		basic_lighting.setVec3("pointLights[2].ambient", pointLightColors[2].x * 0.1, pointLightColors[2].y * 0.1, pointLightColors[2].z * 0.1);
+		basic_lighting.setVec3("pointLights[2].diffuse", pointLightColors[2].x, pointLightColors[2].y, pointLightColors[2].z);
+		basic_lighting.setVec3("pointLights[2].specular", pointLightColors[2].x, pointLightColors[2].y, pointLightColors[2].z);
 		basic_lighting.setFloat("pointLights[2].constant", 1.0f);
 		basic_lighting.setFloat("pointLights[2].linear", 0.09);
 		basic_lighting.setFloat("pointLights[2].quadratic", 0.032);
 		// point light 4
 		basic_lighting.setVec3("pointLights[3].position", pointLightPositions[3]);
-		basic_lighting.setVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
-		basic_lighting.setVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
-		basic_lighting.setVec3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
+		basic_lighting.setVec3("pointLights[3].ambient", pointLightColors[3].x * 0.1, pointLightColors[3].y * 0.1, pointLightColors[3].z * 0.1);
+		basic_lighting.setVec3("pointLights[3].diffuse", pointLightColors[3].x, pointLightColors[3].y, pointLightColors[3].z);
+		basic_lighting.setVec3("pointLights[3].specular", pointLightColors[3].x, pointLightColors[3].y, pointLightColors[3].z);
 		basic_lighting.setFloat("pointLights[3].constant", 1.0f);
 		basic_lighting.setFloat("pointLights[3].linear", 0.09);
 		basic_lighting.setFloat("pointLights[3].quadratic", 0.032);
@@ -239,8 +246,8 @@ int main()
 		basic_lighting.setVec3("spotLight.position", cam.Position);
 		basic_lighting.setVec3("spotLight.direction", cam.Front);
 		basic_lighting.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
-		basic_lighting.setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-		basic_lighting.setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+		basic_lighting.setVec3("spotLight.diffuse", 0.8f, 0.8f, 0.0f);
+		basic_lighting.setVec3("spotLight.specular", 0.8f, 0.8f, 0.0f);
 		basic_lighting.setFloat("spotLight.constant", 1.0f);
 		basic_lighting.setFloat("spotLight.linear", 0.09);
 		basic_lighting.setFloat("spotLight.quadratic", 0.032);

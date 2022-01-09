@@ -30,6 +30,7 @@ public:
     void setVec3(const std::string& name, float x, float y, float z) const;
     void setVec4(const std::string& name, glm::vec4 vec4) const;
     void setVec4(const std::string& name, float x, float y, float z, float w) const;
+private:
     // the program ID
     unsigned int ID;
 };
