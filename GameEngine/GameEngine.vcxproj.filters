@@ -70,19 +70,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="basic.vs">
+    <None Include="basic_lighting.vs">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="basic.fs">
+    <None Include="basic_lighting.fs">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="basicYellow.fs">
+    <None Include="light_cube.vs">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="lighting.vs">
-      <Filter>Файлы ресурсов</Filter>
-    </None>
-    <None Include="lighting.fs">
+    <None Include="light_cube.fs">
       <Filter>Файлы ресурсов</Filter>
     </None>
   </ItemGroup>

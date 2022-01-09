@@ -174,11 +174,10 @@
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="basic.fs" />
-    <None Include="basic.vs" />
-    <None Include="basicYellow.fs" />
-    <None Include="lighting.fs" />
-    <None Include="lighting.vs" />
+    <None Include="basic_lighting.fs" />
+    <None Include="basic_lighting.vs" />
+    <None Include="light_cube.fs" />
+    <None Include="light_cube.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
