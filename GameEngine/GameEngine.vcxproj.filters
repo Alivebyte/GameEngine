@@ -19,6 +19,9 @@
     <Filter Include="Исходные файлы\ImGUI">
       <UniqueIdentifier>{37b65109-fb01-455d-a5bb-161c0d2eb790}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\ModelImporter">
+      <UniqueIdentifier>{80c1016f-b6c4-4887-9a29-2a664c530a42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -54,6 +57,12 @@
     <ClCompile Include="..\libs\imgui\imgui_widgets.cpp">
       <Filter>Исходные файлы\ImGUI</Filter>
     </ClCompile>
+    <ClCompile Include="mesh.cpp">
+      <Filter>Исходные файлы\ModelImporter</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>Исходные файлы\ModelImporter</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -68,6 +77,12 @@
     <ClInclude Include="camera.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>Исходные файлы\ModelImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>Исходные файлы\ModelImporter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="basic_lighting.vs">
@@ -80,6 +95,12 @@
       <Filter>Файлы ресурсов</Filter>
     </None>
     <None Include="light_cube.fs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="model.vs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="model.fs">
       <Filter>Файлы ресурсов</Filter>
     </None>
   </ItemGroup>

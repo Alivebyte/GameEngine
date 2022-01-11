@@ -8,6 +8,7 @@
 #include "main.h"
 #include "shader.h"
 #include "camera.h"
+#include "model.h"
 #include <iostream>
 #include "stb_image.h"
 
@@ -58,57 +59,15 @@ int main()
 		return EXIT_FAILURE;
 	};
 
-	int nrAttrib;
-	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttrib);
-	std::cout << "Max number of vertex attributes: " << nrAttrib << std::endl;
+	stbi_set_flip_vertically_on_load(true);
+
+	glEnable(GL_DEPTH_TEST);
+
 
 	Shader basic_lighting("basic_lighting.vs", "basic_lighting.fs");
 	Shader light_cube("light_cube.vs", "light_cube.fs");
+	Shader model_shader("model.vs", "model.fs");
 
-	float vertices[] = {
-	-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-	 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-
-	-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-
-	-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-	 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-	-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-
-	-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
-	};
-	
 	glm::vec3 cubePositions[] = {
 	
 		glm::vec3(0.0f,  0.0f,  0.0f),
@@ -134,10 +93,10 @@ int main()
 
 	// positions of the point lights
 	glm::vec3 pointLightPositions[] = {
-		glm::vec3(0.7f,  0.2f,  2.0f),
-		glm::vec3(2.3f, -3.3f, -4.0f),
-		glm::vec3(-4.0f,  2.0f, -12.0f),
-		glm::vec3(0.0f,  0.0f, -3.0f)
+		glm::vec3(0.7f,  1.2f,  2.0f),
+		glm::vec3(-0.7f, 1.2f, 2.0f),
+		glm::vec3(-0.7f, -1.6f, 2.0f),
+		glm::vec3(0.7f,  -1.6f, 2.0f)
 	};
 
 	glm::vec3 pointLightColors[] = {
@@ -147,33 +106,10 @@ int main()
 		glm::vec3(0.2f, 0.2f, 1.0f)
 	};
 
-	unsigned int VBO, VAO;//, EBO;
-	glGenVertexArrays(1, &VAO);
-	//glGenBuffers(1, &EBO);
-	glGenBuffers(1, &VBO);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-	glBindVertexArray(VAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	Model backpack("resources/models/backpack.obj");
+	Model test_cube("resources/models/cube.obj");
 
-	
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	unsigned int lightVAO;
-	glGenVertexArrays(1, &lightVAO);
-	glBindVertexArray(lightVAO);
-	
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-	
 	unsigned int diffuseMap = load_texture("container2.png");
 	unsigned int specularMap = load_texture("container2_specular.png");
 	//unsigned int emissionMap = load_texture("emis.png");
@@ -197,7 +133,7 @@ int main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		//render order
-		glEnable(GL_DEPTH_TEST);
+		
 		glClearColor(0.75f, 0.52f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -255,7 +191,7 @@ int main()
 		basic_lighting.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 		
 
-		//basic_lighting.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		
 		glm::mat4 view;
 		view = cam.GetViewMatrix();
 		basic_lighting.setMat4("view", view);
@@ -268,31 +204,10 @@ int main()
 		glm::mat4 model = glm::mat4(1.0f);
 		basic_lighting.setMat4("model", model);
 		
-
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, diffuseMap);
-
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, specularMap);
-
-		/*glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, emissionMap);*/
-
-		glBindVertexArray(VAO);
+		backpack.Draw(basic_lighting);
 
 
 		 // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-		for (unsigned int i = 0; i < 10; i++)
-		{
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, cubePositions[i]);
-			float angle = 20.0f * i;
-			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			basic_lighting.setMat4("model", model);
-
-			
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
 
 		// We don't need light cube for directional light
 
@@ -306,14 +221,15 @@ int main()
 		light_cube.setMat4("model", model);
 		light_cube.setMat4("view", view);
 		light_cube.setMat4("proj", proj);
-		glBindVertexArray(lightVAO);
+		//glBindVertexArray(lightVAO);
 		for (unsigned int i = 0; i < 4; i++)
 		{
 			model = glm::mat4(1.0f);
 			model = glm::translate(model, pointLightPositions[i]);
 			model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
 			light_cube.setMat4("model", model);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
+			test_cube.Draw(light_cube);
+			
 		}
 
 		
