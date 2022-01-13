@@ -62,11 +62,17 @@ int main()
 	stbi_set_flip_vertically_on_load(true);
 
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_STENCIL_TEST);
+	glDepthFunc(GL_LESS);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glStencilFunc(GL_NOTEQUAL, 1, 0xFF); // all fragments should pass the stencil test
+	glStencilMask(0xFF); // enable writing to the stencil buffer
 
 
 	Shader basic_lighting("basic_lighting.vs", "basic_lighting.fs");
 	Shader light_cube("light_cube.vs", "light_cube.fs");
 	Shader model_shader("model.vs", "model.fs");
+	Shader stencil_test("singlecolor.vs", "singlecolor.fs");
 
 	glm::vec3 cubePositions[] = {
 	
@@ -110,13 +116,13 @@ int main()
 	Model backpack("resources/models/backpack.obj");
 	Model test_cube("resources/models/cube.obj");
 
-	unsigned int diffuseMap = load_texture("container2.png");
-	unsigned int specularMap = load_texture("container2_specular.png");
+	//unsigned int diffuseMap = load_texture("container2.png");
+	//unsigned int specularMap = load_texture("container2_specular.png");
 	//unsigned int emissionMap = load_texture("emis.png");
 
-	basic_lighting.use();
-	basic_lighting.setInt("material.diffuse", 0);
-	basic_lighting.setInt("material.specular", 1);
+	//basic_lighting.use();
+	//basic_lighting.setInt("material.diffuse", 0);
+	//basic_lighting.setInt("material.specular", 1);
 	//basic_lighting.setInt("material.emission", 2);
 	
 
@@ -135,10 +141,23 @@ int main()
 		//render order
 		
 		glClearColor(0.75f, 0.52f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+		stencil_test.use();
+		glm::mat4 view;
+		view = cam.GetViewMatrix();
+		glm::mat4 proj = glm::perspective(glm::radians(cam.Zoom), 800.0f / 600.0f, 0.1f, 100.0f);
+		stencil_test.setMat4("projection", proj);
+		stencil_test.setMat4("view", view);
 
 		basic_lighting.use();
 
+		basic_lighting.setMat4("view", view);
+		
+		basic_lighting.setMat4("proj", proj);
+		
+
+		
 		basic_lighting.setVec3("viewPos", cam.Position);
 		basic_lighting.setFloat("material.shininess", 32.0f);
 
@@ -192,14 +211,12 @@ int main()
 		
 
 		
-		glm::mat4 view;
-		view = cam.GetViewMatrix();
-		basic_lighting.setMat4("view", view);
-		glm::mat4 proj = glm::perspective(glm::radians(cam.Zoom), 800.0f / 600.0f, 0.1f, 100.0f);
-		basic_lighting.setMat4("proj", proj);
+		
 		
 
 		//glm::vec3 lightPos(1.2f, 1.0f, 2.1f);
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		glStencilMask(0xFF);
 
 		glm::mat4 model = glm::mat4(1.0f);
 		basic_lighting.setMat4("model", model);
@@ -207,30 +224,46 @@ int main()
 		backpack.Draw(basic_lighting);
 
 
+		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+		glStencilMask(0x00);
+		glDisable(GL_DEPTH_TEST);
+		stencil_test.use();
+
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(2.2f, 2.2f, 2.2f));
+
+		
+		stencil_test.setMat4("model", model);
+
+		backpack.Draw(stencil_test);
+
+		glStencilMask(0xFF);
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		glEnable(GL_DEPTH_TEST);
 		 // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 
 		// We don't need light cube for directional light
 
 		
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, lightPos);
-		model = glm::scale(model, glm::vec3(0.2f));
+		//model = glm::mat4(1.0f);
+		//model = glm::translate(model, lightPos);
+		//model = glm::scale(model, glm::vec3(0.2f));
 
-		light_cube.use();
+		//light_cube.use();
 
-		light_cube.setMat4("model", model);
-		light_cube.setMat4("view", view);
-		light_cube.setMat4("proj", proj);
-		//glBindVertexArray(lightVAO);
-		for (unsigned int i = 0; i < 4; i++)
-		{
-			model = glm::mat4(1.0f);
-			model = glm::translate(model, pointLightPositions[i]);
-			model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
-			light_cube.setMat4("model", model);
-			test_cube.Draw(light_cube);
-			
-		}
+		//light_cube.setMat4("model", model);
+		//light_cube.setMat4("view", view);
+		//light_cube.setMat4("proj", proj);
+		////glBindVertexArray(lightVAO);
+		//for (unsigned int i = 0; i < 4; i++)
+		//{
+		//	model = glm::mat4(1.0f);
+		//	model = glm::translate(model, pointLightPositions[i]);
+		//	model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
+		//	light_cube.setMat4("model", model);
+		//	test_cube.Draw(light_cube);
+		//	
+		//}
 
 		
 		// Create a window called "My First Tool", with a menu bar.

@@ -184,6 +184,8 @@
     <None Include="light_cube.vs" />
     <None Include="model.fs" />
     <None Include="model.vs" />
+    <None Include="singlecolor.fs" />
+    <None Include="singlecolor.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

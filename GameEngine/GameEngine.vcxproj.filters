@@ -103,5 +103,11 @@
     <None Include="model.fs">
       <Filter>Файлы ресурсов</Filter>
     </None>
+    <None Include="singlecolor.fs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="singlecolor.vs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
   </ItemGroup>
 </Project>
