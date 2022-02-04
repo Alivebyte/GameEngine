@@ -62,11 +62,12 @@ int main()
 	stbi_set_flip_vertically_on_load(true);
 
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_STENCIL_TEST);
 	glDepthFunc(GL_LESS);
+	glEnable(GL_STENCIL_TEST);
+	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	glStencilFunc(GL_NOTEQUAL, 1, 0xFF); // all fragments should pass the stencil test
-	glStencilMask(0xFF); // enable writing to the stencil buffer
+	// all fragments should pass the stencil test
+	
 
 
 	Shader basic_lighting("basic_lighting.vs", "basic_lighting.fs");
@@ -143,12 +144,14 @@ int main()
 		glClearColor(0.75f, 0.52f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-		stencil_test.use();
+		
 		glm::mat4 view;
 		view = cam.GetViewMatrix();
 		glm::mat4 proj = glm::perspective(glm::radians(cam.Zoom), 800.0f / 600.0f, 0.1f, 100.0f);
-		stencil_test.setMat4("projection", proj);
+		stencil_test.setMat4("proj", proj);
 		stencil_test.setMat4("view", view);
+
+		
 
 		basic_lighting.use();
 
@@ -214,11 +217,14 @@ int main()
 		
 		
 
-		//glm::vec3 lightPos(1.2f, 1.0f, 2.1f);
+		//glm::vec3 lightpos(1.2f, 1.0f, 2.1f);
 		glStencilFunc(GL_ALWAYS, 1, 0xFF);
 		glStencilMask(0xFF);
 
 		glm::mat4 model = glm::mat4(1.0f);
+
+		model = glm::translate(model,glm::vec3(0.0f, 0.0f, 1.0f));
+		//model = glm::rotate(model, 360.0f, glm::vec3(sin(glfwGetTime()) * 10.0f, 0.0f, cos(glfwGetTime()) * 10.0f));
 		basic_lighting.setMat4("model", model);
 		
 		backpack.Draw(basic_lighting);
@@ -229,11 +235,15 @@ int main()
 		glDisable(GL_DEPTH_TEST);
 		stencil_test.use();
 
-		model = glm::mat4(1.0f);
-		model = glm::scale(model, glm::vec3(2.2f, 2.2f, 2.2f));
 
-		
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.0, 0.0f, 1.0f));
+		model = glm::scale(model, glm::vec3(1.05f, 1.05f, 1.05f));
+		//model = glm::rotate(model, 360.0f, glm::vec3(sin(glfwGetTime()) * 10.0f, 0.0f, cos(glfwGetTime()) * 10.0f));
 		stencil_test.setMat4("model", model);
+		//
+		
 
 		backpack.Draw(stencil_test);
 
