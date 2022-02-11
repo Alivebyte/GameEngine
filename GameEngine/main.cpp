@@ -11,12 +11,15 @@
 #include "model.h"
 #include <iostream>
 #include "stb_image.h"
+#include <map>
+#include <iterator>
 
 #define GLM_FORCE_CXX17
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/trigonometric.hpp>
 
 float mixValue = 0.2f;
 double deltaTime = 0.0f;	// Time between current frame and last frame
@@ -66,6 +69,8 @@ int main()
 	glEnable(GL_STENCIL_TEST);
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// all fragments should pass the stencil test
 	
 
@@ -111,6 +116,14 @@ int main()
 		glm::vec3(1.0f, 0.0f, 0.0f),
 		glm::vec3(1.0f, 1.0, 0.0),
 		glm::vec3(0.2f, 0.2f, 1.0f)
+	};
+
+	std::vector<glm::vec3> backpackPosition =
+	{
+		glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(-1.0f, 0.0f, -4.0f),
+		glm::vec3(-2.0f, 0.0f, -6.0f),
+		glm::vec3(-3.0f, 0.0f, -8.0f)
 	};
 
 
@@ -165,9 +178,9 @@ int main()
 		basic_lighting.setFloat("material.shininess", 32.0f);
 
 		basic_lighting.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
-		basic_lighting.setVec3("dirLight.ambient", 0.3f, 0.24f, 0.14f);
-		basic_lighting.setVec3("dirLight.diffuse", 0.7f, 0.42f, 0.26f);
-		basic_lighting.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+		basic_lighting.setVec4("dirLight.ambient", 0.3f, 0.24f, 0.14f, 1.0f);
+		basic_lighting.setVec4("dirLight.diffuse", 0.7f, 0.42f, 0.26f, 1.0f);
+		basic_lighting.setVec4("dirLight.specular", 0.5f, 0.5f, 0.5f, 1.0f);
 		// point light 1
 		basic_lighting.setVec3("pointLights[0].position", pointLightPositions[0]);
 		basic_lighting.setVec3("pointLights[0].ambient", pointLightColors[0].x * 0.1, pointLightColors[0].y * 0.1, pointLightColors[0].z * 0.1);
@@ -213,7 +226,7 @@ int main()
 		basic_lighting.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 		
 
-		
+		basic_lighting.setFloat("alpha", 0.4f);
 		
 		
 
@@ -221,35 +234,46 @@ int main()
 		glStencilFunc(GL_ALWAYS, 1, 0xFF);
 		glStencilMask(0xFF);
 
-		glm::mat4 model = glm::mat4(1.0f);
+		std::map<float, glm::vec3> sorted;
+		for (int i = 0; i < backpackPosition.size(); i++)
+		{
+			float distance = glm::distance(cam.Position,backpackPosition[i]);
+			sorted[distance] = backpackPosition[i];
+		}
 
-		model = glm::translate(model,glm::vec3(0.0f, 0.0f, 1.0f));
-		//model = glm::rotate(model, 360.0f, glm::vec3(sin(glfwGetTime()) * 10.0f, 0.0f, cos(glfwGetTime()) * 10.0f));
-		basic_lighting.setMat4("model", model);
+		for (std::map<float, glm::vec3>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
+		{
+			glm::mat4 model = glm::mat4(1.0f);
+
+			model = glm::translate(model, it->second);
+			//model = glm::rotate(model, 360.0f, glm::vec3(sin(glfwGetTime()) * 10.0f, 0.0f, cos(glfwGetTime()) * 10.0f));
+			basic_lighting.setMat4("model", model);
+
+			backpack.Draw(basic_lighting);
+		}
+
 		
-		backpack.Draw(basic_lighting);
 
-
-		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-		glStencilMask(0x00);
-		glDisable(GL_DEPTH_TEST);
-		stencil_test.use();
+		//glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+		//glStencilMask(0x00);
+		//glDisable(GL_DEPTH_TEST);
+		//stencil_test.use();
 
 
 
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.0, 0.0f, 1.0f));
-		model = glm::scale(model, glm::vec3(1.05f, 1.05f, 1.05f));
-		//model = glm::rotate(model, 360.0f, glm::vec3(sin(glfwGetTime()) * 10.0f, 0.0f, cos(glfwGetTime()) * 10.0f));
-		stencil_test.setMat4("model", model);
+		//model = glm::mat4(1.0f);
+		//model = glm::translate(model, glm::vec3(0.0, 0.0f, 1.0f));
+		//model = glm::scale(model, glm::vec3(1.05f, 1.05f, 1.05f));
+		////model = glm::rotate(model, 360.0f, glm::vec3(sin(glfwGetTime()) * 10.0f, 0.0f, cos(glfwGetTime()) * 10.0f));
+		//stencil_test.setMat4("model", model);
+		////
 		//
-		
 
-		backpack.Draw(stencil_test);
+		//backpack.Draw(stencil_test);
 
-		glStencilMask(0xFF);
-		glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		glEnable(GL_DEPTH_TEST);
+		//glStencilMask(0xFF);
+		//glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		//glEnable(GL_DEPTH_TEST);
 		 // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 
 		// We don't need light cube for directional light
