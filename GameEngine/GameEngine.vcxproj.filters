@@ -109,5 +109,11 @@
     <None Include="singlecolor.vs">
       <Filter>Файлы ресурсов</Filter>
     </None>
+    <None Include="singlequad.vs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="singlequad.fs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
   </ItemGroup>
 </Project>

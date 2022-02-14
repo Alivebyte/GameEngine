@@ -12,7 +12,6 @@
 #include <iostream>
 #include "stb_image.h"
 #include <map>
-#include <iterator>
 
 #define GLM_FORCE_CXX17
 
@@ -26,6 +25,7 @@ double deltaTime = 0.0f;	// Time between current frame and last frame
 double lastFrame = 0.0f; // Time of last frame
 double lastX = 400, lastY = 300;
 bool firstMouse = true;
+bool wfMode = false;
 glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
 float yaw;
 float pitch;
@@ -82,6 +82,7 @@ int main()
 	Shader light_cube("light_cube.vs", "light_cube.fs");
 	Shader model_shader("model.vs", "model.fs");
 	Shader stencil_test("singlecolor.vs", "singlecolor.fs");
+	Shader single_quad("singlequad.vs", "singlequad.fs");
 
 	glm::vec3 cubePositions[] = {
 	
@@ -129,9 +130,31 @@ int main()
 		glm::vec3(-6.0f, 0.0f, -12.0f)
 	};
 
+	float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+	   // positions   // texCoords
+	   -1.0f,  1.0f,  0.0f, 1.0f,
+	   -1.0f, -1.0f,  0.0f, 0.0f,
+		1.0f, -1.0f,  1.0f, 0.0f,
+
+	   -1.0f,  1.0f,  0.0f, 1.0f,
+		1.0f, -1.0f,  1.0f, 0.0f,
+		1.0f,  1.0f,  1.0f, 1.0f
+	};
+
 
 	Model backpack("resources/models/backpack.obj");
 	Model test_cube("resources/models/cube.obj");
+
+	GLuint quadVAO, quadVBO;
+	glGenVertexArrays(1, &quadVAO);
+	glGenBuffers(1, &quadVBO);
+	glBindVertexArray(quadVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
 	//unsigned int diffuseMap = load_texture("container2.png");
 	//unsigned int specularMap = load_texture("container2_specular.png");
@@ -141,12 +164,41 @@ int main()
 	//basic_lighting.setInt("material.diffuse", 0);
 	//basic_lighting.setInt("material.specular", 1);
 	//basic_lighting.setInt("material.emission", 2);
-	
+	GLuint fbo;
+	glGenFramebuffers(1, &fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+	unsigned int texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+
+	unsigned int rbo;
+	glGenRenderbuffers(1, &rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		std::cout << "TOBI PIZDA!!!ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init();
 
+	// Enable wireframe
+
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -156,7 +208,10 @@ int main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		//render order
-		
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+		glEnable(GL_DEPTH_TEST);
+
 		glClearColor(0.75f, 0.52f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -180,7 +235,7 @@ int main()
 		basic_lighting.setVec3("viewPos", cam.Position);
 		basic_lighting.setFloat("material.shininess", 32.0f);
 
-		basic_lighting.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
+		basic_lighting.setVec3("dirLight.direction", -0.5f, -0.1f, -0.3f);
 		basic_lighting.setVec4("dirLight.ambient", 0.3f, 0.24f, 0.14f, 1.0f);
 		basic_lighting.setVec4("dirLight.diffuse", 0.7f, 0.42f, 0.26f, 1.0f);
 		basic_lighting.setVec4("dirLight.specular", 0.5f, 0.5f, 0.5f, 1.0f);
@@ -255,6 +310,16 @@ int main()
 			backpack.Draw(basic_lighting);
 		}
 
+		glBindVertexArray(0);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glDisable(GL_DEPTH_TEST);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		single_quad.use();
+		glBindVertexArray(quadVAO);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 		
 
 		//glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
@@ -391,6 +456,20 @@ void processInput(GLFWwindow* window)
 		else
 		{
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+	{
+		if (!wfMode) 
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			wfMode = true;
+		}
+		else
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			wfMode = false;
 		}
 	}
 
