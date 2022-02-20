@@ -76,13 +76,13 @@ int main()
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// all fragments should pass the stencil test
 	
-
-
-	Shader basic_lighting("basic_lighting.vs", "basic_lighting.fs");
-	Shader light_cube("light_cube.vs", "light_cube.fs");
-	Shader model_shader("model.vs", "model.fs");
-	Shader stencil_test("singlecolor.vs", "singlecolor.fs");
-	Shader single_quad("singlequad.vs", "singlequad.fs");
+	std::string shaderDir = "resources/shaders/";
+	
+	Shader basic_lighting(shaderDir + "basic_lighting.vs", shaderDir + "basic_lighting.fs");
+	Shader light_cube(shaderDir + "light_cube.vs", shaderDir + "light_cube.fs");
+	Shader model_shader(shaderDir + "model.vs", shaderDir + "model.fs");
+	Shader stencil_test(shaderDir + "singlecolor.vs", shaderDir + "singlecolor.fs");
+	Shader single_quad(shaderDir + "singlequad.vs", shaderDir + "singlequad.fs");
 
 	glm::vec3 cubePositions[] = {
 	
