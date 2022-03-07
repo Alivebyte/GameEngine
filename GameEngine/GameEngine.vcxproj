@@ -178,16 +178,18 @@
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="basic_lighting.fs" />
-    <None Include="basic_lighting.vs" />
-    <None Include="light_cube.fs" />
-    <None Include="light_cube.vs" />
-    <None Include="model.fs" />
-    <None Include="model.vs" />
-    <None Include="singlecolor.fs" />
-    <None Include="singlecolor.vs" />
-    <None Include="singlequad.fs" />
-    <None Include="singlequad.vs" />
+    <None Include="resources\shaders\basic_lighting.fs" />
+    <None Include="resources\shaders\basic_lighting.vs" />
+    <None Include="resources\shaders\light_cube.fs" />
+    <None Include="resources\shaders\light_cube.vs" />
+    <None Include="resources\shaders\model.fs" />
+    <None Include="resources\shaders\model.vs" />
+    <None Include="resources\shaders\singlecolor.fs" />
+    <None Include="resources\shaders\singlecolor.vs" />
+    <None Include="resources\shaders\singlequad.fs" />
+    <None Include="resources\shaders\singlequad.vs" />
+    <None Include="resources\shaders\skybox.fs" />
+    <None Include="resources\shaders\skybox.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

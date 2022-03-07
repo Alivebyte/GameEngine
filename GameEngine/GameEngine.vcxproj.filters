@@ -85,34 +85,40 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="basic_lighting.vs">
+    <None Include="resources\shaders\skybox.vs">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="basic_lighting.fs">
+    <None Include="resources\shaders\skybox.fs">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="light_cube.vs">
+    <None Include="resources\shaders\basic_lighting.fs">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="light_cube.fs">
+    <None Include="resources\shaders\basic_lighting.vs">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="model.vs">
+    <None Include="resources\shaders\light_cube.fs">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="model.fs">
+    <None Include="resources\shaders\light_cube.vs">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="singlecolor.fs">
+    <None Include="resources\shaders\model.fs">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="singlecolor.vs">
+    <None Include="resources\shaders\model.vs">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="singlequad.vs">
+    <None Include="resources\shaders\singlecolor.fs">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="singlequad.fs">
+    <None Include="resources\shaders\singlecolor.vs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="resources\shaders\singlequad.fs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="resources\shaders\singlequad.vs">
       <Filter>Файлы ресурсов</Filter>
     </None>
   </ItemGroup>

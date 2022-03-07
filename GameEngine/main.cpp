@@ -62,7 +62,7 @@ int main()
 		return EXIT_FAILURE;
 	};
 
-	stbi_set_flip_vertically_on_load(true);
+	//stbi_set_flip_vertically_on_load(true);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -83,6 +83,52 @@ int main()
 	Shader model_shader(shaderDir + "model.vs", shaderDir + "model.fs");
 	Shader stencil_test(shaderDir + "singlecolor.vs", shaderDir + "singlecolor.fs");
 	Shader single_quad(shaderDir + "singlequad.vs", shaderDir + "singlequad.fs");
+	Shader skyboxshader(shaderDir + "skybox.vs", shaderDir + "skybox.fs");
+
+	float skyboxVertices[] = {
+		// positions          
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f
+	};
 
 	glm::vec3 cubePositions[] = {
 	
@@ -145,7 +191,7 @@ int main()
 	Model backpack("resources/models/backpack.obj");
 	Model test_cube("resources/models/cube.obj");
 
-	GLuint quadVAO, quadVBO;
+	/*GLuint quadVAO, quadVBO;
 	glGenVertexArrays(1, &quadVAO);
 	glGenBuffers(1, &quadVBO);
 	glBindVertexArray(quadVAO);
@@ -154,7 +200,7 @@ int main()
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));*/
 
 	//unsigned int diffuseMap = load_texture("container2.png");
 	//unsigned int specularMap = load_texture("container2_specular.png");
@@ -164,7 +210,7 @@ int main()
 	//basic_lighting.setInt("material.diffuse", 0);
 	//basic_lighting.setInt("material.specular", 1);
 	//basic_lighting.setInt("material.emission", 2);
-	GLuint fbo;
+	/*GLuint fbo;
 	glGenFramebuffers(1, &fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
@@ -190,7 +236,31 @@ int main()
 	{
 		std::cout << "TOBI PIZDA!!!ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
 	}
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
+
+	GLuint skyvbo, skyvao;
+	glGenVertexArrays(1, &skyvao);
+	glGenBuffers(1, &skyvbo);
+	glBindVertexArray(skyvao);
+	glBindBuffer(GL_ARRAY_BUFFER, skyvbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+	std::vector<std::string> faces
+	{
+			"resources/materials/skybox/right.jpg",
+			"resources/materials/skybox/left.jpg",
+			"resources/materials/skybox/top.jpg",
+			"resources/materials/skybox/bottom.jpg",
+			"resources/materials/skybox/front.jpg",
+			"resources/materials/skybox/back.jpg"
+	};
+	unsigned int cubemapTexture = loadCubemap(faces);
+
+	
+	skyboxshader.use();
+	skyboxshader.setInt("skybox", 0);
 
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -208,21 +278,41 @@ int main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		//render order
-		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+		//glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
 		glEnable(GL_DEPTH_TEST);
 
 		glClearColor(0.75f, 0.52f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
+
+		
+		
+
 		
 		glm::mat4 view;
 		view = cam.GetViewMatrix();
+		glm::mat4 skyview = glm::mat4(glm::mat3(cam.GetViewMatrix()));
 		glm::mat4 proj = glm::perspective(glm::radians(cam.Zoom), 800.0f / 600.0f, 0.1f, 100.0f);
 		stencil_test.setMat4("proj", proj);
 		stencil_test.setMat4("view", view);
 
 		
+		glDepthMask(GL_FALSE);
+		skyboxshader.use();
+		skyboxshader.setMat4("projection", proj);
+		skyboxshader.setMat4("view", skyview);
+
+
+
+		glBindVertexArray(skyvao);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDepthMask(GL_TRUE);
+
+		
+
 
 		basic_lighting.use();
 
@@ -310,7 +400,11 @@ int main()
 			backpack.Draw(basic_lighting);
 		}
 
-		glBindVertexArray(0);
+
+		
+
+
+		/*glBindVertexArray(0);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glDisable(GL_DEPTH_TEST);
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -319,7 +413,7 @@ int main()
 		single_quad.use();
 		glBindVertexArray(quadVAO);
 		glBindTexture(GL_TEXTURE_2D, texture);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glDrawArrays(GL_TRIANGLES, 0, 6);*/
 		
 
 		//glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
@@ -386,8 +480,8 @@ int main()
 		ImGui::ColorEdit4("Color", my_color);
 
 		// Plot some values
-		const float my_values[] = { 0.2f, 0.1f, 1.0f, 0.5f, 0.9f, 2.2f };
-		ImGui::PlotLines("Frame Times", my_values, IM_ARRAYSIZE(my_values));
+		const float my_values[] = { 1.0f / glfwGetTimerFrequency() };
+		ImGui::PlotLines("Frame Time", my_values, IM_ARRAYSIZE(my_values));
 
 		// Display contents in a scrolling region
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Important Stuff");
@@ -537,6 +631,38 @@ unsigned int load_texture(const char* path)
 		stbi_image_free(data);
 	}
 	
+
+	return textureID;
+}
+
+unsigned int loadCubemap(std::vector<std::string> faces)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+	int width, height, nrChannels;
+	for (unsigned int i = 0; i < faces.size(); i++)
+	{
+		unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+		if (data)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+				0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+			);
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+			stbi_image_free(data);
+		}
+		else
+		{
+			std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
+			stbi_image_free(data);
+		}
+	}
 
 	return textureID;
 }
