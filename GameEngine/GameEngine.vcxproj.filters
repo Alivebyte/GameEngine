@@ -121,5 +121,17 @@
     <None Include="resources\shaders\singlequad.vs">
       <Filter>Файлы ресурсов</Filter>
     </None>
+    <None Include="resources\shaders\cubemap_reflection.vs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="resources\shaders\cubemap_reflection.fs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="resources\shaders\cubemap_refraction.vs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="resources\shaders\cubemap_refraction.fs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
   </ItemGroup>
 </Project>

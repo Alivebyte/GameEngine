@@ -180,6 +180,10 @@
   <ItemGroup>
     <None Include="resources\shaders\basic_lighting.fs" />
     <None Include="resources\shaders\basic_lighting.vs" />
+    <None Include="resources\shaders\cubemap_reflection.fs" />
+    <None Include="resources\shaders\cubemap_reflection.vs" />
+    <None Include="resources\shaders\cubemap_refraction.fs" />
+    <None Include="resources\shaders\cubemap_refraction.vs" />
     <None Include="resources\shaders\light_cube.fs" />
     <None Include="resources\shaders\light_cube.vs" />
     <None Include="resources\shaders\model.fs" />

@@ -84,6 +84,52 @@ int main()
 	Shader stencil_test(shaderDir + "singlecolor.vs", shaderDir + "singlecolor.fs");
 	Shader single_quad(shaderDir + "singlequad.vs", shaderDir + "singlequad.fs");
 	Shader skyboxshader(shaderDir + "skybox.vs", shaderDir + "skybox.fs");
+	Shader reflection(shaderDir + "cubemap_reflection.vs", shaderDir + "cubemap_reflection.fs");
+	Shader refraction(shaderDir + "cubemap_refraction.vs", shaderDir + "cubemap_refraction.fs");
+
+	float vertices[] = {
+	-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+
+	-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+
+	-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+	-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+	-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+	 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+	-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+
+	-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+	 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+	 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+	};
 
 	float skyboxVertices[] = {
 		// positions          
@@ -129,6 +175,8 @@ int main()
 		-1.0f, -1.0f,  1.0f,
 		 1.0f, -1.0f,  1.0f
 	};
+
+	
 
 	glm::vec3 cubePositions[] = {
 	
@@ -238,6 +286,17 @@ int main()
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 
+	//unsigned int cubeVAO, cubeVBO;
+	//glGenVertexArrays(1, &cubeVAO);
+	//glGenBuffers(1, &cubeVBO);
+	//glBindVertexArray(cubeVAO);
+	//glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	//glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+
 	GLuint skyvbo, skyvao;
 	glGenVertexArrays(1, &skyvao);
 	glGenBuffers(1, &skyvbo);
@@ -258,9 +317,16 @@ int main()
 	};
 	unsigned int cubemapTexture = loadCubemap(faces);
 
+	refraction.use();
+	refraction.setInt("skybox", 0);
+
+	reflection.use();
+	reflection.setInt("skybox", 0);
 	
 	skyboxshader.use();
 	skyboxshader.setInt("skybox", 0);
+
+	
 
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -285,17 +351,15 @@ int main()
 		glClearColor(0.75f, 0.52f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-
-		
-		
-
-		
 		glm::mat4 view;
 		view = cam.GetViewMatrix();
-		glm::mat4 skyview = glm::mat4(glm::mat3(cam.GetViewMatrix()));
 		glm::mat4 proj = glm::perspective(glm::radians(cam.Zoom), 800.0f / 600.0f, 0.1f, 100.0f);
+		
 		stencil_test.setMat4("proj", proj);
 		stencil_test.setMat4("view", view);
+
+		
+		
 
 		basic_lighting.use();
 
@@ -314,36 +378,36 @@ int main()
 		basic_lighting.setVec4("dirLight.specular", 0.5f, 0.5f, 0.5f, 1.0f);
 		// point light 1
 		basic_lighting.setVec3("pointLights[0].position", pointLightPositions[0]);
-		basic_lighting.setVec3("pointLights[0].ambient", pointLightColors[0].x * 0.1, pointLightColors[0].y * 0.1, pointLightColors[0].z * 0.1);
+		basic_lighting.setVec3("pointLights[0].ambient", pointLightColors[0].x * 0.1f, pointLightColors[0].y * 0.1f, pointLightColors[0].z * 0.1f);
 		basic_lighting.setVec3("pointLights[0].diffuse", pointLightColors[0].x, pointLightColors[0].y, pointLightColors[0].z);
 		basic_lighting.setVec3("pointLights[0].specular", pointLightColors[0].x, pointLightColors[0].y, pointLightColors[0].z);
 		basic_lighting.setFloat("pointLights[0].constant", 1.0f);
-		basic_lighting.setFloat("pointLights[0].linear", 0.09);
-		basic_lighting.setFloat("pointLights[0].quadratic", 0.032);
+		basic_lighting.setFloat("pointLights[0].linear", 0.09f);
+		basic_lighting.setFloat("pointLights[0].quadratic", 0.032f);
 		// point light 2
 		basic_lighting.setVec3("pointLights[1].position", pointLightPositions[1]);
-		basic_lighting.setVec3("pointLights[1].ambient", pointLightColors[1].x * 0.1, pointLightColors[1].y * 0.1, pointLightColors[1].z * 0.1);
+		basic_lighting.setVec3("pointLights[1].ambient", pointLightColors[1].x * 0.1f, pointLightColors[1].y * 0.1f, pointLightColors[1].z * 0.1f);
 		basic_lighting.setVec3("pointLights[1].diffuse", pointLightColors[1].x, pointLightColors[1].y, pointLightColors[1].z);
 		basic_lighting.setVec3("pointLights[1].specular", pointLightColors[1].x, pointLightColors[1].y, pointLightColors[1].z);
 		basic_lighting.setFloat("pointLights[1].constant", 1.0f);
-		basic_lighting.setFloat("pointLights[1].linear", 0.09);
-		basic_lighting.setFloat("pointLights[1].quadratic", 0.032);
+		basic_lighting.setFloat("pointLights[1].linear", 0.09f);
+		basic_lighting.setFloat("pointLights[1].quadratic", 0.032f);
 		// point light 3
 		basic_lighting.setVec3("pointLights[2].position", pointLightPositions[2]);
-		basic_lighting.setVec3("pointLights[2].ambient", pointLightColors[2].x * 0.1, pointLightColors[2].y * 0.1, pointLightColors[2].z * 0.1);
+		basic_lighting.setVec3("pointLights[2].ambient", pointLightColors[2].x * 0.1f, pointLightColors[2].y * 0.1f, pointLightColors[2].z * 0.1f);
 		basic_lighting.setVec3("pointLights[2].diffuse", pointLightColors[2].x, pointLightColors[2].y, pointLightColors[2].z);
 		basic_lighting.setVec3("pointLights[2].specular", pointLightColors[2].x, pointLightColors[2].y, pointLightColors[2].z);
 		basic_lighting.setFloat("pointLights[2].constant", 1.0f);
-		basic_lighting.setFloat("pointLights[2].linear", 0.09);
-		basic_lighting.setFloat("pointLights[2].quadratic", 0.032);
+		basic_lighting.setFloat("pointLights[2].linear", 0.09f);
+		basic_lighting.setFloat("pointLights[2].quadratic", 0.032f);
 		// point light 4
 		basic_lighting.setVec3("pointLights[3].position", pointLightPositions[3]);
-		basic_lighting.setVec3("pointLights[3].ambient", pointLightColors[3].x * 0.1, pointLightColors[3].y * 0.1, pointLightColors[3].z * 0.1);
+		basic_lighting.setVec3("pointLights[3].ambient", pointLightColors[3].x * 0.1f, pointLightColors[3].y * 0.1f, pointLightColors[3].z * 0.1f);
 		basic_lighting.setVec3("pointLights[3].diffuse", pointLightColors[3].x, pointLightColors[3].y, pointLightColors[3].z);
 		basic_lighting.setVec3("pointLights[3].specular", pointLightColors[3].x, pointLightColors[3].y, pointLightColors[3].z);
 		basic_lighting.setFloat("pointLights[3].constant", 1.0f);
-		basic_lighting.setFloat("pointLights[3].linear", 0.09);
-		basic_lighting.setFloat("pointLights[3].quadratic", 0.032);
+		basic_lighting.setFloat("pointLights[3].linear", 0.09f);
+		basic_lighting.setFloat("pointLights[3].quadratic", 0.032f);
 		// spotLight
 		basic_lighting.setVec3("spotLight.position", cam.Position);
 		basic_lighting.setVec3("spotLight.direction", cam.Front);
@@ -351,8 +415,8 @@ int main()
 		basic_lighting.setVec3("spotLight.diffuse", 0.8f, 0.8f, 0.0f);
 		basic_lighting.setVec3("spotLight.specular", 0.8f, 0.8f, 0.0f);
 		basic_lighting.setFloat("spotLight.constant", 1.0f);
-		basic_lighting.setFloat("spotLight.linear", 0.09);
-		basic_lighting.setFloat("spotLight.quadratic", 0.032);
+		basic_lighting.setFloat("spotLight.linear", 0.09f);
+		basic_lighting.setFloat("spotLight.quadratic", 0.032f);
 		basic_lighting.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
 		basic_lighting.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 		
@@ -374,7 +438,7 @@ int main()
 
 		//for (std::map<float, glm::vec3>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
 		//{
-		//	glm::mat4 model = glm::mat4(1.0f);
+		//	
 
 		//	model = glm::translate(model, it->second);
 		//	//model = glm::rotate(model, 360.0f, glm::vec3(sin(glfwGetTime()) * 10.0f, 0.0f, cos(glfwGetTime()) * 10.0f));
@@ -388,12 +452,34 @@ int main()
 		basic_lighting.setMat4("model", model);
 		backpack.Draw(basic_lighting);
 
+		
+		model = glm::mat4(1.0f);
+		reflection.use();
+		reflection.setMat4("model", model);
+		reflection.setMat4("view", view);
+		reflection.setMat4("projection", proj);
+		reflection.setVec3("cameraPos", cam.Position);
+
+		
+		test_cube.Draw(reflection);
+
+		model = glm::translate(model,glm::vec3(-6.0f, 0.0f, 0.0f));
+		refraction.use();
+		refraction.setMat4("model", model);
+		refraction.setMat4("view", view);
+		refraction.setMat4("projection", proj);
+		refraction.setVec3("cameraPos", cam.Position);
+
+
+		backpack.Draw(refraction);
+		
+		
+
 		glDepthFunc(GL_LEQUAL);
 		skyboxshader.use();
 		skyboxshader.setMat4("projection", proj);
-		skyboxshader.setMat4("view", skyview);
-
-
+		view = glm::mat4(glm::mat3(cam.GetViewMatrix()));
+		skyboxshader.setMat4("view", view);
 
 		glBindVertexArray(skyvao);
 		glActiveTexture(GL_TEXTURE0);
