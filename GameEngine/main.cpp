@@ -297,23 +297,6 @@ int main()
 		stencil_test.setMat4("proj", proj);
 		stencil_test.setMat4("view", view);
 
-		
-		glDepthMask(GL_FALSE);
-		skyboxshader.use();
-		skyboxshader.setMat4("projection", proj);
-		skyboxshader.setMat4("view", skyview);
-
-
-
-		glBindVertexArray(skyvao);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glDepthMask(GL_TRUE);
-
-		
-
-
 		basic_lighting.use();
 
 		basic_lighting.setMat4("view", view);
@@ -382,25 +365,41 @@ int main()
 		glStencilFunc(GL_ALWAYS, 1, 0xFF);
 		glStencilMask(0xFF);
 
-		std::map<float, glm::vec3> sorted;
-		for (int i = 0; i < backpackPosition.size(); i++)
-		{
-			float distance = glm::distance(cam.Position,backpackPosition[i]);
-			sorted[distance] = backpackPosition[i];
-		}
+		//std::map<float, glm::vec3> sorted;
+		//for (int i = 0; i < backpackPosition.size(); i++)
+		//{
+		//	float distance = glm::distance(cam.Position,backpackPosition[i]);
+		//	sorted[distance] = backpackPosition[i];
+		//}
 
-		for (std::map<float, glm::vec3>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
-		{
-			glm::mat4 model = glm::mat4(1.0f);
+		//for (std::map<float, glm::vec3>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
+		//{
+		//	glm::mat4 model = glm::mat4(1.0f);
 
-			model = glm::translate(model, it->second);
-			//model = glm::rotate(model, 360.0f, glm::vec3(sin(glfwGetTime()) * 10.0f, 0.0f, cos(glfwGetTime()) * 10.0f));
-			basic_lighting.setMat4("model", model);
+		//	model = glm::translate(model, it->second);
+		//	//model = glm::rotate(model, 360.0f, glm::vec3(sin(glfwGetTime()) * 10.0f, 0.0f, cos(glfwGetTime()) * 10.0f));
+		//	basic_lighting.setMat4("model", model);
 
-			backpack.Draw(basic_lighting);
-		}
+		//	backpack.Draw(basic_lighting);
+		//}
+
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f));
+		basic_lighting.setMat4("model", model);
+		backpack.Draw(basic_lighting);
+
+		glDepthFunc(GL_LEQUAL);
+		skyboxshader.use();
+		skyboxshader.setMat4("projection", proj);
+		skyboxshader.setMat4("view", skyview);
 
 
+
+		glBindVertexArray(skyvao);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDepthFunc(GL_LESS);
 		
 
 
